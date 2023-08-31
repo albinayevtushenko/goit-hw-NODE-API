@@ -58,7 +58,7 @@ const login = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.status(200).json({
+  res.json({
     token,
     user: { email: user.email, subscription: user.subscription },
   });
@@ -66,7 +66,7 @@ const login = async (req, res) => {
 
 const getCurrent = async (req, res) => {
   const { email, subscription } = req.user;
-  res.status(200).json({ email, subscription });
+  res.json({ email, subscription });
 };
 
 const logout = async (req, res) => {
@@ -94,7 +94,7 @@ const updateAvatar = async (req, res) => {
 
   await User.findByIdAndUpdate(id, { avatarURL });
 
-  res.status(200).json({
+  res.json({
     avatarURL,
   });
 };
