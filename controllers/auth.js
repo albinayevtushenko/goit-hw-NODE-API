@@ -78,19 +78,19 @@ const logout = async (req, res) => {
 const updateAvatar = async (req, res) => {
   const { _id: id } = req.user;
   const { path: tempUpload, originalname } = req.file;
-  const filename = `${id}_${originalname}`;
+  const fileName = `${id}_${originalname}`;
 
-  const resultUpload = path.join(avatarsDir, filename);
+  const resultUpload = path.join(avatarsDir, fileName);
 
   await fs.rename(tempUpload, resultUpload);
-
-  const avatarURL = path.join("avatars", filename);
 
   Jimp.read(tempUpload)
     .then((picture) => picture.resize(250, 250).write(resultUpload))
     .catch((error) => {
       console.error(error);
     });
+
+  const avatarURL = path.join("avatars", fileName);
 
   await User.findByIdAndUpdate(id, { avatarURL });
 
